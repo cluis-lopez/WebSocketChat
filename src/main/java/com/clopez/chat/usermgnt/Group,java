@@ -1,0 +1,21 @@
+package com.clopez.chat.usermgnt;
+
+public class Group {
+
+    private String id;
+    private String name;
+    private User owner;
+    private Lisr<User> users;
+
+    public  Group (String name, User owner) {
+        this.owner = owner;
+        this.name = name;
+        this.id = UUID.randomUUID().toString();
+        users = new List<Users>();
+        users.add(owner);
+    }
+
+    public addMember(user){
+        users.add(user);
+    }
+}
