@@ -1,6 +1,9 @@
 package com.clopez.chat.usermgnt;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -22,29 +25,29 @@ public class UDatabaseTest {
         id2 = u2.getId();
         id3 = u3.getId();
 
-        db.CreateUser(u1);
-        db.CreateUser(u2);
-        db.CreateUser(u3);
+        db.createUser(u1);
+        db.createUser(u2);
+        db.createUser(u3);
     }
 
     @Test
     public void TestUsersFindById() {
-        assertEquals("ById " + u1.getName(), (db.FindUserById(id1)).getName(), u1.getName());
-        assertEquals("ById " + u2.getName(), (db.FindUserById(id2)).getName(), u2.getName());
-        assertEquals("ById " + u3.getName(), (db.FindUserById(id3)).getName(), u3.getName());
+        assertEquals("ById " + u1.getName(), (db.findUserById(id1)).getName(), u1.getName());
+        assertEquals("ById " + u2.getName(), (db.findUserById(id2)).getName(), u2.getName());
+        assertEquals("ById " + u3.getName(), (db.findUserById(id3)).getName(), u3.getName());
     }
 
     @Test
     public void TestUsersFindByName() {
-        assertEquals("ByName " + u1.getName(), (db.FindUserByName("clopez")).getId(), id1);
-        assertEquals("ByName " + u2.getName(), (db.FindUserByName("pepito")).getId(), id2);
-        assertEquals("ByName " + u3.getName(), (db.FindUserByName("juanito")).getId(), id3);
+        assertEquals("ByName " + u1.getName(), (db.findUserByName("clopez")).getId(), id1);
+        assertEquals("ByName " + u2.getName(), (db.findUserByName("pepito")).getId(), id2);
+        assertEquals("ByName " + u3.getName(), (db.findUserByName("juanito")).getId(), id3);
     }
 
     @Test
     public void DeleteUser() {
-        db.DeleteUser(u2.getId());
-        assertEquals("El usuario " + u2.getName() + "No debería existir", db.FindUserById(u2.getId()), null);
+        db.deleteUser(u2.getId());
+        assertEquals("El usuario " + u2.getName() + "No debería existir", db.findUserById(u2.getId()), null);
     }
 
     @Test
@@ -57,16 +60,22 @@ public class UDatabaseTest {
     @Test
     public void Tokens(){
         assertEquals("El token de clopez debe de durar 30 días, valido hasta " + u1.getTokenValidUpTo(), true, u1.isTokenValid());
+        /*long diff = u1.getTokenValidUpTo().getTime() - new Date().getTime();
+        long teorico = 30*24*3600*1000;
+        System.out.println("Diff : " + diff + " Teorico (30 dias)  : " + teorico);
+        assertTrue("El token deben de servir para +/- 30 * 24 * 3600 * 1000 milisegundos", diff < (30*24*3600*1000)+5000 && diff > (30*24*3600*1000)-5000);
+        */
     }
+
 
     @Test (expected = IllegalArgumentException.class)
     public void DuplicateUser() {
-        db.CreateUser(u1);
+        db.createUser(u1);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void DeleteInvalidUser() {
-        db.DeleteUser("invalido");
+        db.deleteUser("invalido");
     }
 
     @AfterClass
