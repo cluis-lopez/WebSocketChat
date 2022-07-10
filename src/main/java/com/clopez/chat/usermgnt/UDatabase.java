@@ -1,8 +1,8 @@
 package com.clopez.chat.usermgnt;
 
 public interface UDatabase {
-    public void CreateUser(User user);
-    public void DeleteUser(String id);
-    public User FindUserByName(String name);
-    public User FindUserById(String id);
+    public void createUser(User user);
+    public void deleteUser(String id);
+    public User findUserByName(String name);
+    public User findUserById(String id);
 }

@@ -33,6 +33,10 @@ public class User {
         return name;
     }
 
+    public String getToken(){
+        return token;
+    }
+
     public Date getTokenValidUpTo(){
         return token_valid_upTo;
     }

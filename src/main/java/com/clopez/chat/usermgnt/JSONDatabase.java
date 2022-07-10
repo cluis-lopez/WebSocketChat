@@ -24,7 +24,7 @@ public class JSONDatabase implements UDatabase{
         users = new HashMap<String, User>();
         JsonReader reader;
         try {
-            reader = new JsonReader(new FileReader(filename));
+            reader = new JsonReader(new FileReader("webapps/"+filename));
             Type type = new TypeToken<HashMap<String, User>>(){}.getType();
             users = gson.fromJson(reader, type);
             reader.close();
@@ -39,7 +39,7 @@ public class JSONDatabase implements UDatabase{
 
     public void saveDatabase(){
         try {
-            FileWriter fw = new FileWriter(datafile);
+            FileWriter fw = new FileWriter("webapps/"+datafile);
             gson.toJson(users, fw);
             fw.flush();
             fw.close();
@@ -49,19 +49,19 @@ public class JSONDatabase implements UDatabase{
     }
 
     public boolean deleteDatabase(){
-        File file = new File(datafile);
+        File file = new File("webapps/"+datafile);
         System.out.println("El fichero: " +file.getAbsolutePath() + " se va a borrar");
         return file.delete();
     }
 
-    public void CreateUser(User u) throws IllegalArgumentException {
-        if (FindUserByName(u.getName()) != null) // El usuario ya existe
+    public void createUser(User u) throws IllegalArgumentException {
+        if (findUserByName(u.getName()) != null) // El usuario ya existe
             throw new IllegalArgumentException("Usuario ya existente");
         users.put(u.getId(), u);
         saveDatabase();
     }
 
-    public void DeleteUser(String id) throws IllegalArgumentException {
+    public void deleteUser(String id) throws IllegalArgumentException {
         if (!users.containsKey(id)) //Invalid user
             throw new IllegalArgumentException("El usuario no existe");
         else {
@@ -70,14 +70,14 @@ public class JSONDatabase implements UDatabase{
         }
     }
 
-    public User FindUserById(String id){
+    public User findUserById(String id){
         if (users.containsKey(id))
             return users.get(id);
         else  
             return null;
     }
 
-    public User FindUserByName(String name){
+    public User findUserByName(String name){
         User u;
         for (String id : users.keySet()){
             u = users.get(id);

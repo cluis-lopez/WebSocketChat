@@ -13,15 +13,15 @@ public class Tester1 {
             System.out.println("El fichero no existe");
 
         System.out.println("Creando usuario de pueba");
-        db.CreateUser(u1);
+        db.createUser(u1);
 
-        User u2 = db.FindUserByName("clopez");
+        User u2 = db.findUserByName("clopez");
 
         System.out.println("EL usuario " + u2.getName() + " tiene id " + u2.getId());
 
         User u3 = new User("pepito", "123");
 
-        db.CreateUser(u3);
+        db.createUser(u3);
 
 
     }

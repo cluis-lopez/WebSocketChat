@@ -4,7 +4,7 @@ public class Tester2 {
     public static void main(String[] args){
         JSONDatabase db = new JSONDatabase("maindb");
 
-        User u = db.FindUserByName("clopez");
+        User u = db.findUserByName("clopez");
 
         if (u != null)
             System.out.println("El usuario " + u.getName() + " tiene Id " + u.getId());
