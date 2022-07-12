@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tomcat WebSocket</title>
+</head>
+
+<body>
+    <form>
+        <div id="currentuser"></div>
+        <div id="status"></div>
+        <label for="to">Destinatario</label>
+        <input id="to" type="text">
+        <br>
+        <label for="content">Mensaje</label>
+        <input id="content" type="text">
+        <br>
+        <input onclick="wsSendMessage();" value="Enviar" type="button">
+        <input onclick="wsCloseConnection();" value="Desconectar" type="button">
+    </form>
+    <br>
+    <div id="contenedor_1"></div>
+    <script type="text/javascript">
+        var payload = localStorage.getItem("payload");
+        if (payload == null)
+            location.href = "login.html";
+        
+        /* var payload = {
+            "id": "2f3f7464-6621-4d12-8628-705475c96dad",
+            "token": "ef6a5125-6772-42de-807e-fad91e515d74"
+        } */
+        var user = JSON.parse(payload);
+        var webSocket = new WebSocket("ws://192.168.1.11:8080/ChatServer/Server/{" + payload + "}");
+        var mainCont = document.getElementById("contenedor_1");
+        var content = document.getElementById("content");
+        var to = document.getElementById("to");
+        webSocket.onopen = function () { wsOpen(); };
+        webSocket.onmessage = function (message) { wsGetMessage(message); };
+        webSocket.onclose = function (message) { wsClose(message); };
+        webSocket.onerror = function (message) { wsError(message); };
+       
+        function wsOpen() {
+            document.getElementById("currentuser").innerHTML = user.user;
+            document.getElementById("status").innerHTML = "Connected";
+        }
+
+        function wsSendMessage() {
+            message = {from : user.user,
+                        to : to.value,
+                        content : content.value
+                    };
+            webSocket.send(JSON.stringify(message));
+            const newmess = document.createElement("div");
+            newmess.style.backgroundColor("green");
+            newmess.innerHTML = "To: " + message.to
+            newmess.appendChild("p");
+            newmess.innerHTML += message.content;
+            mainCont.appendChild(newmess);
+        }
+
+        function wsCloseConnection() {
+            webSocket.close();
+            location.href = "login.html";
+        }
+        function wsGetMessage(message) {
+            echoText.value += "Message received from to the server : " + message.data + "\n";
+        }
+        function wsClose(message) {
+            echoText.value += "Disconnect ... \n";
+        }
+
+        function wsError(message) {
+            echoText.value += "Error ... \n" + message;
+        }
+    </script>
+</body>
+
+</html>
