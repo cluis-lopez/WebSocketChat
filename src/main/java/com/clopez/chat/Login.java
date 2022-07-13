@@ -47,9 +47,10 @@ public class Login extends HttpServlet {
             response.put("code", "Invalid User");
         }
             
-        resp.setContentType("application/json");
-        PrintWriter pw = resp.getWriter();
-        pw.println(gs.toJson(response));
-        pw.close();
+        System.out.println ("Respuesta login:  " + gs.toJson(response));
+        resp.setContentType("application/json;charset=UTF-8");
+        resp.setHeader("cache-control", "no-cache");
+        resp.getWriter().write(gs.toJson(response));
+        resp.flushBuffer();
     }
 }

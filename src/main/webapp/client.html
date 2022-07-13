@@ -20,7 +20,7 @@
         <input onclick="wsCloseConnection();" value="Desconectar" type="button">
     </form>
     <br>
-    <div id="contenedor_1"></div>
+    <div id="contenedor1"></div>
     <script type="text/javascript">
         var payload = localStorage.getItem("payload");
         if (payload == null)
@@ -32,7 +32,7 @@
         } */
         var user = JSON.parse(payload);
         var webSocket = new WebSocket("ws://192.168.1.11:8080/ChatServer/Server/{" + payload + "}");
-        var mainCont = document.getElementById("contenedor_1");
+        var mainCont = document.getElementById("contenedor1");
         var content = document.getElementById("content");
         var to = document.getElementById("to");
         webSocket.onopen = function () { wsOpen(); };
@@ -45,14 +45,14 @@
             document.getElementById("status").innerHTML = "Connected";
         }
 
-        function wsSendMessage() {
+        function wsSendMessage(x) {
             message = {from : user.user,
                         to : to.value,
                         content : content.value
                     };
             webSocket.send(JSON.stringify(message));
             const newmess = document.createElement("div");
-            newmess.style.backgroundColor("green");
+            newmess.style.backgroundColor = "green";
             newmess.innerHTML = "To: " + message.to
             newmess.appendChild("p");
             newmess.innerHTML += message.content;
@@ -63,15 +63,21 @@
             webSocket.close();
             location.href = "login.html";
         }
-        function wsGetMessage(message) {
-            echoText.value += "Message received from to the server : " + message.data + "\n";
+        function wsGetMessage(x) {
+            message = JSON.parse(x);
+            const newmess = document.createElement("div");
+            newmess.style.backgroundColor = "cyan";
+            newmess.innerHTML = "From: " + message.from;
+            newmess.appendChild("p");
+            newmess.innerHTML += message.content;
+            mainCont.appendChild(newmess);
         }
         function wsClose(message) {
-            echoText.value += "Disconnect ... \n";
+            echoText = "Disconnect ... \n";
         }
 
         function wsError(message) {
-            echoText.value += "Error ... \n" + message;
+            echoText = "Error ... \n" + message;
         }
     </script>
 </body>

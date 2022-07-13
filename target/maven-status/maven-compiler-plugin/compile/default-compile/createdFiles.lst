@@ -1,0 +1,11 @@
+com\clopez\chat\Message.class
+com\clopez\chat\usermgnt\Group.class
+com\clopez\chat\usermgnt\UDatabase.class
+com\clopez\chat\usermgnt\JSONDatabase$1.class
+com\clopez\chat\usermgnt\Tester2.class
+com\clopez\chat\Login.class
+com\clopez\chat\usermgnt\User.class
+com\clopez\chat\usermgnt\Tester1.class
+com\clopez\chat\usermgnt\JSONDatabase.class
+com\clopez\chat\Register.class
+com\clopez\chat\Server$1.class

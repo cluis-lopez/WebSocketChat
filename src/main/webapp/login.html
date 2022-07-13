@@ -9,8 +9,10 @@
 <body>
     <form>
         <div>
+            <label for="name">Usuario</label>
             <input id="name" type="text">
-            <input id="password" tgype="" text">
+            <label for="password">Password</label>
+            <input id="password" type="password">
         </div>
         <div>
             <input onclick="login();" value="login" type="button">
@@ -20,22 +22,26 @@
     <script type="text/javascript">
         function login() {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
+            xhttp.onload = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    var resp = this.responseText;
-                    console.log(resp);
+                    var resp = JSON.parse(this.responseText);
                     if (resp.code == "OK") {
-                        window.localStorage.setItem("id", resp.id);
-                        window.localStorage.setItem("user", resp.user);
-                        window.localStorage.setItem("token", resp.token);
+                        window.localStorage.setItem("payload", JSON.stringify(resp));
+                        location.href = "client.html";
                     }
                 } else {
-                    location.href("login.html");
+                    location.href = "login.html";
                 }
             };
-            xhttp.open("POST", "/Login", true);
+
+            xhttp.onerror = function (e) {
+                console.log("Error Unresponsive Domain ");
+            };
+
+            xhttp.open("POST", "/ChatServer/Login", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("user=" + document.getElementById("name") + "&password=" + document.getElementById("password"));
+            xhttp.setRequestHeader("Accept", "application/json");
+            xhttp.send("user=" + document.getElementById("name").value + "&password=" + document.getElementById("password").value);
         }
     </script>
 </body>
