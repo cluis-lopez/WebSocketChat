@@ -64,7 +64,7 @@
             location.href = "login.html";
         }
         function wsGetMessage(x) {
-            message = JSON.parse(x);
+            message = JSON.parse(x.data);
             const newmess = document.createElement("div");
             newmess.style.backgroundColor = "cyan";
             newmess.innerHTML = "From: " + message.from;

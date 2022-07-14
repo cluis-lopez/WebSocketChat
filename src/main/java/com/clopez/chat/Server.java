@@ -30,7 +30,7 @@ public class Server {
     }.getType();
     private final TypeAdapter<JsonElement> strictAdapter = new Gson().getAdapter(JsonElement.class);
     private Gson gson = new Gson();
-    private JSONDatabase db = new JSONDatabase("usersdb");
+    private static JSONDatabase db = new JSONDatabase("usersdb");
 
     @OnOpen
     public void onOpen(Session session, @PathParam("payload") String pl) {
@@ -84,6 +84,7 @@ public class Server {
                     message.put("from", payload.get("from"));
                     message.put("content", payload.get("content"));
                     sid.getBasicRemote().sendText(gson.toJson(message));
+                    System.out.println("Enviado mensaje al usuario: " + message.get("to") + " SesionId: "+ sid.getId() + " desde el usuario " + message.get("from"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -129,9 +130,6 @@ public class Server {
     }
 
     private Session isConnectedUser(String uname){
-        System.out.println("Usuarios conectados: " + sessions.size());
-        for (String kk : sessions.keySet())
-            System.out.println("El usuario: " + kk + " esta en la sesión : " + sessions.get(kk).getId());
         for (String u : sessions.keySet()){
             System.out.println("Conectado : " + u );
             if (u.equals(uname))
