@@ -34,9 +34,14 @@ public class Register extends HttpServlet {
         if (u == null && isValidPassword(password)){
             //El usuario no existe y la password es válida
             u = new User(user, password);
-            db.createUser(u);
-            response.put("user", u.getName());
-            response.put("id", u.getId());
+            try {
+            	db.createUser(u);
+            	response.put("user", u.getName());
+                response.put("id", u.getId());
+            } catch (IllegalArgumentException e) {
+            	response.put("code", e.getMessage());
+            }
+
         } else {
             response.put("code", "ERROR: Invalid user or Password");
         }
